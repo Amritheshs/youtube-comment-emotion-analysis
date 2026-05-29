@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Emotion AI</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background:#0d1117;
+            overflow:hidden;
+            color:white;
+        }
+
+        #particles-js{
+            position:fixed;
+            width:100%;
+            height:100%;
+            z-index:-1;
+        }
+
+        .container{
+            width:100%;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:40px;
+        }
+
+        .main-card{
+
+            width:100%;
+            max-width:900px;
+
+            background:rgba(255,255,255,0.05);
+
+            border:1px solid rgba(255,255,255,0.1);
+
+            backdrop-filter:blur(20px);
+
+            border-radius:30px;
+
+            padding:50px;
+
+            box-shadow:0 10px 40px rgba(0,0,0,0.5);
+
+            animation:fadeIn 1s ease;
+        }
+
+        .title{
+
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        .title h1{
+
+            font-size:52px;
+
+            background:linear-gradient(
+                to right,
+                #ff4d6d,
+                #00c3ff
+            );
+
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+
+        .title p{
+
+            color:#c5d1dc;
+            margin-top:10px;
+        }
+
+        textarea{
+
+            width:100%;
+            height:180px;
+
+            border:none;
+            outline:none;
+
+            border-radius:20px;
+
+            padding:20px;
+
+            background:#161b22;
+
+            color:white;
+
+            font-size:16px;
+
+            resize:none;
+        }
+
+        textarea::placeholder{
+            color:#7d8590;
+        }
+
+        .button-area{
+
+            display:flex;
+            justify-content:center;
+            margin-top:25px;
+        }
+
+        button{
+
+            padding:15px 45px;
+
+            border:none;
+
+            border-radius:50px;
+
+            font-size:17px;
+
+            font-weight:600;
+
+            cursor:pointer;
+
+            color:white;
+
+            background:linear-gradient(
+                to right,
+                #ff004c,
+                #00c3ff
+            );
+
+            transition:0.4s;
+        }
+
+        button:hover{
+
+            transform:scale(1.08);
+
+            box-shadow:0 0 35px rgba(0,195,255,0.4);
+        }
+
+        .loader{
+
+            width:90px;
+            height:90px;
+
+            border:6px solid rgba(255,255,255,0.1);
+
+            border-top:6px solid #00c3ff;
+
+            border-radius:50%;
+
+            margin:30px auto;
+
+            animation:spin 1s linear infinite;
+
+            display:none;
+        }
+
+        .result-card{
+
+            margin-top:40px;
+
+            background:rgba(255,255,255,0.06);
+
+            border-radius:25px;
+
+            padding:35px;
+
+            text-align:center;
+
+            transform:scale(0.9);
+
+            opacity:0;
+
+            transition:0.5s;
+        }
+
+        .result-card.active{
+
+            transform:scale(1);
+
+            opacity:1;
+        }
+
+        .result-card h2{
+
+            margin-bottom:15px;
+
+            color:#00c3ff;
+        }
+
+        #emotion{
+
+            font-size:48px;
+            font-weight:700;
+        }
+
+        .emotion-glow{
+
+            animation:pulse 2s infinite;
+        }
+
+        .typing{
+
+            overflow:hidden;
+
+            white-space:nowrap;
+
+            border-right:3px solid #00c3ff;
+
+            width:0;
+
+            animation:
+            typing 3s steps(40,end) forwards,
+            blink 0.8s infinite;
+        }
+
+        .emotion-bars{
+
+            margin-top:30px;
+        }
+
+        .bar{
+
+            margin-bottom:15px;
+        }
+
+        .bar-title{
+
+            margin-bottom:5px;
+        }
+
+        .progress{
+
+            width:100%;
+            height:15px;
+
+            background:#1f2937;
+
+            border-radius:20px;
+
+            overflow:hidden;
+        }
+
+        .progress-fill{
+
+            height:100%;
+
+            border-radius:20px;
+
+            width:0;
+
+            transition:1.5s;
+        }
+
+        .joy{
+            background:#00ffae;
+        }
+
+        .anger{
+            background:#ff3b3b;
+        }
+
+        .sad{
+            background:#3b82f6;
+        }
+
+        @keyframes spin{
+
+            100%{
+                transform:rotate(360deg);
+            }
+        }
+
+        @keyframes pulse{
+
+            0%{
+                text-shadow:0 0 10px white;
+            }
+
+            50%{
+                text-shadow:0 0 40px #00ffae;
+            }
+
+            100%{
+                text-shadow:0 0 10px white;
+            }
+        }
+
+        @keyframes fadeIn{
+
+            from{
+                opacity:0;
+                transform:translateY(30px);
+            }
+
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+        }
+
+        @keyframes typing{
+
+            from{
+                width:0;
+            }
+
+            to{
+                width:100%;
+            }
+        }
+
+        @keyframes blink{
+
+            50%{
+                border-color:transparent;
+            }
+        }
+
+        @media(max-width:768px){
+
+            .main-card{
+                padding:25px;
+            }
+
+            .title h1{
+                font-size:34px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div id="particles-js"></div>
+
+<div class="container">
+
+    <div class="main-card">
+
+        <div class="title">
+
+            <h1 class="typing">
+                Emotion Detector
+            </h1>
+
+            <p>
+                Advanced AI Emotion Detection System
+            </p>
+
+        </div>
+
+        <form action="/predict"
+              method="POST"
+              onsubmit="showLoader()">
+
+            <textarea
+                name="comment"
+                placeholder="Paste YouTube comment here..."
+                required>{{ comment if comment else '' }}</textarea>
+
+            <div class="button-area">
+
+                <button type="submit">
+
+                    Analyze Emotion
+
+                </button>
+
+            </div>
+
+        </form>
+
+        <div class="loader"
+             id="loader"></div>
+
+        {% if prediction %}
+
+        <div class="result-card active">
+
+            <h2>Detected Emotion</h2>
+
+            <div id="emotion"
+                 class="emotion-glow">
+
+                 {{ prediction }}
+
+            </div>
+
+            
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script>
+
+function showLoader(){
+
+    document
+    .getElementById("loader")
+    .style.display="block";
+}
+
+particlesJS("particles-js", {
+
+    "particles":{
+
+        "number":{
+            "value":80
+        },
+
+        "size":{
+            "value":3
+        },
+
+        "move":{
+            "speed":2
+        },
+
+        "line_linked":{
+            "enable":true
+        }
+    }
+});
+
+</script>
+
+</body>
+
+</html>
